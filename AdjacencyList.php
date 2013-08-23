@@ -1,8 +1,8 @@
 <?php
 
-require_once('Interface.php');
+require_once('Weighted_Interface.php');
 
-class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Interface
+class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Weighted_Interface
 {
     public function __construct($directed=true) 
     {
@@ -23,16 +23,16 @@ class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Inter
      *  (From $a to $b, if this is a directed graph).
      *  Inherently adds vertices $a and $b, if not present.
      */
-    public function addEdge($a, $b)
+    public function addEdge($a, $b, $weight)
     {
-        $this->_addEdge($a, $b, $this->_directed);
+        $this->_addEdge($a, $b, $weight, $this->_directed);
     }
     
     /**
      *  Internal function for adding an edge. 
      *  Takes care of adding both directions if graph is undirected.
      */
-    protected function _addEdge($a, $b, $directed)
+    protected function _addEdge($a, $b, $weight, $directed)
     {
         // Check if we have $a as a starting node. If not, initialize it.
         if (!isset($this->_graph[$a])) {
@@ -40,13 +40,13 @@ class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Inter
         }
         // Check if $a-->$b has already been set. If not, set it.
         if (!isset($this->_graph[$a][$b])) {
-            $this->_graph[$a][$b] = true;
+            $this->_graph[$a][$b] = $weight;
         }
         
         // If this is an undirected graph, call this function with the vertices flipped.
         // But set directed as true for the call, so we don't recurse infinitely.
         if (!$directed) {
-            $this->_addEdge($b, $a, true);
+            $this->_addEdge($b, $a, $weight, true);
         }
     }
     
@@ -99,7 +99,7 @@ class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Inter
         $inEdges = array();
         foreach ($this->_graph as $vertex => $edges) {
             if (isset($edges[$a])) {
-                $inEdges[$vertex] = true;
+                $inEdges[$vertex] = $edges[$a];
             }
         }
         return $inEdges;
@@ -112,6 +112,31 @@ class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Inter
     public function outEdges($a) 
     {
         return (isset($this->_graph[$a])) ? $this->_graph[$a] : array();
+    }
+    
+    
+    /**
+     *  Returns the weight of the edge between $a and $b
+     *  (From $a to $b, if this is a directed graph)
+     */
+    public function getEdgeWeight($a, $b) 
+    {
+        if (!$this->hasEdge($a, $b)) {
+            throw new Exception('There is no edge from a to b');
+        }
+        return $this->_graph[$a][$b];
+    }
+    
+    /**
+     *  Updates the weight of the edge between $a and $b.
+     *  (From $a to $b, if this is a directed graph)
+     */
+    public function updateEdgeWeight($a, $b, $weight)
+    {
+        if (!$this->hasEdge($a, $b)) {
+            throw new Exception('There is no edge from a to b');
+        }
+        $this->_graph[$a][$b] = $weight;
     }
 
 }

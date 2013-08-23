@@ -32,3 +32,8 @@ print_r($alDir->inEdges('a'));
 print_r($alDir->inEdges('b'));
 print_r($alDir->inEdges('c'));
 print_r($alDir->inEdges('e'));
+
+
+// @TODO What happens if I try to add the same edge twice without removing it? What should happen?
+
+// @TODO add tests for weighted graphs
