@@ -26,6 +26,9 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
      //@TODO, make weight optional
     public function addEdge($a, $b, $weight=0)
     {
+        if (!is_numeric($weight)) {
+            throw new Exception("Edge weight must be numeric");
+        }
         $this->_addEdge($a, $b, $weight, $this->_directed);
     }
     
@@ -136,6 +139,9 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
     {
         if (!$this->hasEdge($a, $b)) {
             throw new Exception('There is no edge from a to b');
+        }
+        if (!is_numeric($weight)) {
+            throw new Exception("Edge weight must be numeric");
         }
         $this->_graph[$a][$b] = $weight;
     }
