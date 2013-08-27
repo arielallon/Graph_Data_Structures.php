@@ -2,7 +2,7 @@
 
 require_once('Weighted_Interface.php');
 
-class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Weighted_Interface
+class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interface
 {
     public function __construct($directed=true) 
     {

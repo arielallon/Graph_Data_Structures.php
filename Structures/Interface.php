@@ -1,6 +1,6 @@
 <?php
 
-interface Graph_Data_Structures_Interface
+interface Graph_Structures_Interface
 {
     
     /**

@@ -3,7 +3,7 @@
 require_once('AdjacencyList.php');
 
 
-$alDir = new Graph_Data_Structures_AdjcanceyList();
+$alDir = new Graph_Structures_AdjcanceyList();
 
 $alDir->addEdge('a', 'b');
 $alDir->addEdge('a', 'c');

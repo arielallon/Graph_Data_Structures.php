@@ -1,7 +1,7 @@
 <?php
 // require_once 'Interface.php';
 
-interface Graph_Data_Structures_Weighted_Interface
+interface Graph_Structures_Weighted_Interface
 //     extends Graph_Data_Structures_Interface
 {
     
