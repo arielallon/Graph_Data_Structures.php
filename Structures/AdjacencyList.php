@@ -23,7 +23,8 @@ class Graph_Data_Structures_AdjcanceyList implements Graph_Data_Structures_Weigh
      *  (From $a to $b, if this is a directed graph).
      *  Inherently adds vertices $a and $b, if not present.
      */
-    public function addEdge($a, $b, $weight)
+     //@TODO, make weight optional
+    public function addEdge($a, $b, $weight=0)
     {
         $this->_addEdge($a, $b, $weight, $this->_directed);
     }
