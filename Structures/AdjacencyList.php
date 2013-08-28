@@ -29,6 +29,11 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
         if (!is_numeric($weight)) {
             throw new Exception("Edge weight must be numeric");
         }
+        
+        // Add vertices (will not add if they already exist)
+        $this->addVertex($a);
+        $this->addVertex($b);
+        
         $this->_addEdge($a, $b, $weight, $this->_directed);
     }
     
@@ -37,11 +42,7 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
      *  Takes care of adding both directions if graph is undirected.
      */
     protected function _addEdge($a, $b, $weight, $directed)
-    {
-        // Check if we have $a as a starting node. If not, initialize it.
-        if (!isset($this->_graph[$a])) {
-            $this->_graph[$a] = array();
-        }
+    {   
         // Check if $a-->$b has already been set. If not, set it.
         if (!isset($this->_graph[$a][$b])) {
             $this->_graph[$a][$b] = $weight;
@@ -55,11 +56,23 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
     }
     
     /**
+     *  Add vertex $a to the graph. Unconnected unless edges are added.
+     */
+    public function addVertex($a)
+    {
+        // Check if we have $a as a starting node. If not, initialize it.
+        if (!isset($this->_graph[$a])) {
+            $this->_graph[$a] = array();
+        }
+    }
+    
+    /**
      *  Removes the edge between $a and $b from our graph.
      *  (From $a to $b, if this is a directed graph).
      */
     public function removeEdge($a, $b) 
     {
+    
         $this->_removeEdge($a, $b, $this->_directed);
     }
     
@@ -79,6 +92,20 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
         if (!$directed) {
             $this->_removeEdge($b, $a, true);
         }
+    }
+    
+    /**
+     *  Remove vertex from the graph.
+     *  First runs through each of the inEdges to the vertex and removes them.
+     */
+    public function removeVertex($a)
+    {
+        $inEdges = $this->inEdges($a);
+        print_r($inEdges);
+        foreach ($inEdges as $edge=>$weight) {
+            unset($this->_graph[$edge][$a]);
+        }
+        unset($this->_graph[$a]);
     }
     
     /**

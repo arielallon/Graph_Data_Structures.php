@@ -49,6 +49,26 @@ print_r($alDir->inEdges('c'));
 print_r($alDir->inEdges('e'));
 
 
+$alDir->removeEdge('a', 'b');
+echo "\n\n=== has edge? ===\n";
+echoHasEdge('a', 'b', $alDir);
+echoHasEdge('b', 'a', $alDir);;
+echoHasEdge('a', 'd', $alDir);
+echoHasEdge('a', 'e', $alDir);
+echoHasEdge('c', 'd', $alDir);
+echoHasEdge('d', 'c', $alDir);
+
+$alDir->addEdge('a','b');
+$alDir->removeVertex('c');
+echo "\n\n=== has edge? ===\n";
+echoHasEdge('a', 'b', $alDir);
+echoHasEdge('b', 'a', $alDir);;
+echoHasEdge('a', 'd', $alDir);
+echoHasEdge('a', 'e', $alDir);
+echoHasEdge('c', 'd', $alDir);
+echoHasEdge('d', 'c', $alDir);
+
+
 // @TODO What happens if I try to add the same edge twice without removing it? What should happen?
 
 // @TODO add tests for weighted graphs

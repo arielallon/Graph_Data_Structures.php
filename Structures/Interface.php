@@ -10,11 +10,15 @@ interface Graph_Structures_Interface
      */
     public function addEdge($a, $b);
     
+    public function addVertex($a);
+    
     /**
      *  Removes the edge between $a and $b from our graph.
      *  (From $a to $b, if this is a directed graph).
      */
     public function removeEdge($a, $b);
+    
+    public function removeVertex($a);
     
     /**
      *  Checks if we have an edge between $a and $b.
