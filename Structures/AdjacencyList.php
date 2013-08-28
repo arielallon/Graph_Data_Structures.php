@@ -4,6 +4,9 @@ require_once('Weighted_Interface.php');
 
 class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interface
 {
+    protected $_directed;
+    protected $_graph;
+
     public function __construct($directed=true) 
     {
         $this->_directed = $directed;
@@ -16,6 +19,11 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
     protected function _init()
     {
         $this->_graph = array();
+    }
+    
+    public function getGraph()
+    {
+        return $this->_graph;
     }
     
     /**
