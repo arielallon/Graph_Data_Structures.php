@@ -2,7 +2,7 @@
 
 require_once('Weighted_Interface.php');
 
-class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interface
+class Graph_Structures_AdjacencyList implements Graph_Structures_Weighted_Interface
 {
     protected $_directed;
     protected $_graph;
@@ -31,7 +31,6 @@ class Graph_Structures_AdjcanceyList implements Graph_Structures_Weighted_Interf
      *  (From $a to $b, if this is a directed graph).
      *  Inherently adds vertices $a and $b, if not present.
      */
-     //@TODO, make weight optional
     public function addEdge($a, $b, $weight=0)
     {
         if (!is_numeric($weight)) {
