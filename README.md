@@ -8,5 +8,4 @@ Graph tools implemented in PHP.
 * Adjacency List (allows weights, directionality)
 
 # Algorithms #
-* Dijkstra's single-source shortest path (not yet working)
-
+* Dijkstra's single-source shortest path
