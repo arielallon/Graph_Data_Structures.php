@@ -19,6 +19,10 @@ class Graph_Algorithms_Dijkstra
         }
         self::log("Our initial graph: \n".print_r($_graph->getGraph(), true), $verbose);
 
+        // Ensure $a and $b are both actually in our graph
+        if (!isset($_unvisited[$a]) || !isset($_unvisited[$b])) {
+            throw new Exception('Both source and destination must be in graph');
+        }
 
         // Set current node's distance to 0
         $_unvisited[$a] = 0;
@@ -28,12 +32,20 @@ class Graph_Algorithms_Dijkstra
         $currentNode = $a;
         $currentNodeDistance = 0;
 
+        // Construct a list of immediate ancestors. This will function as "breadcrumbs" back home to reconstruct the shortest path
+        $breadcrumbs = array($a => false);
+
         // Loop until the unvisited list is empty (though we may end early)
         while (!empty($_unvisited)) {
          
             // Loop through current node's out edges and assign distances if possible
             self::log("\nLooping through outEdges of $currentNode\n", $verbose);
             foreach ($_graph->outEdges($currentNode) as $vertex => $edgeWeight) {
+
+                // Make sure we have no negative edges
+                if ($edgeWeight < 0) {
+                    throw new Exception("Negative edge weights are not allowed.");
+                }
 
                 // We only want to consider outEdges to unvisited vertices
                 if (isset($_unvisited[$vertex])) {
@@ -44,6 +56,9 @@ class Graph_Algorithms_Dijkstra
                     $distance = $currentNodeDistance + $edgeWeight;
                     if ($_unvisited[$vertex] > $distance) {
                         $_unvisited[$vertex] = $distance;
+
+                        // also, update our breadcrumbs
+                        $breadcrumbs[$vertex] = $currentNode;
                     }
                     self::log(" and is now ".$_unvisited[$vertex]."\n", $verbose);
                 }
@@ -70,6 +85,7 @@ class Graph_Algorithms_Dijkstra
                     $currentNode = $node;
                 }
             }
+            self::log("Next node is $currentNode at a distance of $currentNodeDistance\n", $verbose);
 
             // If we looped through all the unvisited nodes and they're all and INF distance away,
             // then they are unconnected to our origin and we will never reach them. might as well bail.
@@ -79,9 +95,22 @@ class Graph_Algorithms_Dijkstra
 
         }
 
-        // @todo spit out path
-        // @todo account for case where there is no route
+        // Construct path. If there was no path, returned array will be empty.
+        $path = array();
+        if (isset($breadcrumbs[$b])) {
 
+            // retrace our breadcrumbs, starting from the last node. push them onto a stack as we go
+            $array[] = $b;
+            $crumb = $b;
+            while ($breadcrumbs[$crumb] !== false) {
+                $crumb = $breadcrumbs[$crumb];
+                $path[] = $crumb;
+            }
+
+            // now flip the stack (this should be less expensive than inserting at the front as we go would have been)
+            $path = array_reverse($path);
+        }
+        return $path;
     }
 
     protected static function moveNodeToVisitedList($node, &$_visited, &$_unvisited)
