@@ -17,16 +17,16 @@ class Graph_Algorithms_Dijkstra
         foreach ($_graph->getGraph() as $vertex => $edges) {
             $_unvisited[$vertex] = INF;
         }
-        self::log("Our initial graph: \n".print_r($_graph->getGraph(), true), $verbose);
+        //self::log("Our initial graph: \n".print_r($_graph->getGraph(), true), $verbose);
 
         // Ensure $a and $b are both actually in our graph
         if (!isset($_unvisited[$a]) || !isset($_unvisited[$b])) {
-            throw new Exception('Both source and destination must be in graph');
+            throw new Exception("Both source ($a) and destination ($b) must be in graph");
         }
 
         // Set current node's distance to 0
         $_unvisited[$a] = 0;
-        self::log("\nInit'd unvisited: \n".print_r($_unvisited, true), $verbose);
+        //self::log("\nInit'd unvisited: \n".print_r($_unvisited, true), $verbose);
 
         // Set the initial values for the current node
         $currentNode = $a;
@@ -39,7 +39,7 @@ class Graph_Algorithms_Dijkstra
         while (!empty($_unvisited)) {
          
             // Loop through current node's out edges and assign distances if possible
-            self::log("\nLooping through outEdges of $currentNode\n", $verbose);
+            //self::log("\nLooping through outEdges of $currentNode\n", $verbose);
             foreach ($_graph->outEdges($currentNode) as $vertex => $edgeWeight) {
 
                 // Make sure we have no negative edges
@@ -52,7 +52,7 @@ class Graph_Algorithms_Dijkstra
 
                     // See if the distance through this edges beats the the shotest distance until now.
                     // if so, set this as the new distance
-                    self::log("Distance of $vertex was ".$_unvisited[$vertex], $verbose);
+                    // self::log("Distance of $vertex was ".$_unvisited[$vertex], $verbose);
                     $distance = $currentNodeDistance + $edgeWeight;
                     if ($_unvisited[$vertex] > $distance) {
                         $_unvisited[$vertex] = $distance;
@@ -60,14 +60,14 @@ class Graph_Algorithms_Dijkstra
                         // also, update our breadcrumbs
                         $breadcrumbs[$vertex] = $currentNode;
                     }
-                    self::log(" and is now ".$_unvisited[$vertex]."\n", $verbose);
+                    // self::log(" and is now ".$_unvisited[$vertex]."\n", $verbose);
                 }
                 
             }
 
             // move the current node to the visited list
             self::moveNodeToVisitedList($currentNode, $_visited, $_unvisited);
-            self::log("Moved $currentNode to visited list. Total unvisited: ".count($_unvisited)." | Total visited: ".count($_visited)."\n", $verbose);
+            // self::log("Moved $currentNode to visited list. Total unvisited: ".count($_unvisited)." | Total visited: ".count($_visited)."\n", $verbose);
 
             // If the current node was the destination, no need to continue looping
             if ($currentNode == $b) {
@@ -85,7 +85,7 @@ class Graph_Algorithms_Dijkstra
                     $currentNode = $node;
                 }
             }
-            self::log("Next node is $currentNode at a distance of $currentNodeDistance\n", $verbose);
+            // self::log("Next node is $currentNode at a distance of $currentNodeDistance\n", $verbose);
 
             // If we looped through all the unvisited nodes and they're all and INF distance away,
             // then they are unconnected to our origin and we will never reach them. might as well bail.
@@ -100,8 +100,8 @@ class Graph_Algorithms_Dijkstra
         if (isset($breadcrumbs[$b])) {
 
             // retrace our breadcrumbs, starting from the last node. push them onto a stack as we go
-            $array[] = $b;
             $crumb = $b;
+            $path[] = $b;
             while ($breadcrumbs[$crumb] !== false) {
                 $crumb = $breadcrumbs[$crumb];
                 $path[] = $crumb;
